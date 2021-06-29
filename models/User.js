@@ -1,4 +1,5 @@
 const {model,Schema} = require('mongoose')
+const validator = require('validators')
 const userSchema = new Schema({
     name : {
         type:String,

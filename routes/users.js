@@ -1,16 +1,24 @@
 const express = require('express');
-const { signup } = require('../controllers/usersController');
 const router = express.Router();
-//const userController = require()
+const { validateInputs } = require("../middleware/validator");
+const { userValidationRules } = require("../lib/validation/userRules");
+const {
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+  addUser
+} = require("../controllers/usersController");
 
-/* GET users listing. */
 router
-.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+  .route("/")
+  .get(getUsers)
+.post(validateInputs(userValidationRules), addUser);
 
-router.post('/signup',signup)
-
-
+router
+  .route("/:id")
+  .get(getUser)
+  .delete(deleteUser)
+  .put(updateUser);
 
 module.exports = router;

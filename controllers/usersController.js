@@ -2,6 +2,10 @@ const User = require('../models/User')
 const { validationResult } = require("express-validator");
 const createError = require("http-errors");
 
+
+exports.uploadUserPhoto = upload.single('photo');
+
+
 exports.getUsers = async (req, res, next) => {
     try {
         const users = await User.find().sort("lastName");

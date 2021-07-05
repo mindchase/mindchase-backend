@@ -1,14 +1,20 @@
+const mongoose = require("mongoose");
 const {model,Schema} = require('mongoose')
 const validator = require('validator')
+
 const userSchema = new Schema({
-    name : {
+    firstName : {
+        type:String,
+        required: [true,'Please provide your name!'],
+    },
+    lastName : {
         type:String,
         required: [true,'Please provide your name!'],
     },
     email : {
         type :String,
         required: [true,'Please provide your email'],
-        unique : true,
+        unique : [true,'You have already registered with this email. Forgot your password?'],
         lowercase: true,
         validate :[validator.isEmail,'please provide a valid email']
 
@@ -21,7 +27,15 @@ const userSchema = new Schema({
     passwordConfirm : {
         type : String,
         required:[true ,'Please confirm your password']
-    }
+    },
+    
+    toObject: {
+        virtuals: true
+    },
+    toJSON: {
+        virtuals: true
+        }
+      
 })
 
-module.exports = model('User',userSchema)
+module.exports = mongoose.model('userModel',userSchema)

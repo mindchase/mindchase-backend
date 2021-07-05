@@ -1,27 +1,59 @@
-const {model,Schema} = require('mongoose')
-const validator = require('validator')
-const userSchema = new Schema({
-    name : {
-        type:String,
-        required: [true,'Please provide your name!'],
-    },
-    email : {
-        type :String,
-        required: [true,'Please provide your email'],
-        unique : true,
-        lowercase: true,
-        validate :[validator.isEmail,'please provide a valid email']
+const mongoose = require("mongoose");
+const bcypt = require("bcryptjs");
 
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      message: [true, "Name is required"],
     },
-    password:{
-        type:String,
-        required  : [true,'please provide a password'],
-        minlength : 8
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true,
     },
-    passwordConfirm : {
-        type : String,
-        required:[true ,'Please confirm your password']
-    }
-})
+    role: {
+      type: String,
+      enum: ["Admin", "User"],
+      required: true,
+      default: "User",
+    },
+    password: {
+      type: String,
+      required: true,
+      message: [true, "Password is required!"],
+    },
+  },
 
-module.exports = model('User',userSchema)
+  {
+    toObject: {
+      virtuals: true,
+    },
+    toJSON: {
+      virtuals: true,
+    },
+  },
+
+  {
+    timestamps: true,
+  }
+);
+userSchema.pre("save", function (next) {
+  const user = this;
+  if (!user.isModified || !user.isNew) {
+    next();
+  } else {
+    bcypt.hash(user.password, 10, function (err, hash) {
+      if (err) {
+        throw new Error(err);
+      } else {
+        user.password = hash;
+        next();
+      }
+    });
+  }
+});
+
+module.exports = mongoose.model("User", userSchema);

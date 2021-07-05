@@ -1,8 +1,8 @@
-const jwt = require('jwt-then')
+const jwt = require('jsonwebtoken')
 
-module.exports = async (req, res, next) => {
+module.exports = (req, res, next) => {
     try{
-            if(!req.headers.authorization) throw "Forbidden"
+            if(!req.headers.authorization) throw Error("Forbidden");
             const token = req.headers.authorization.split(" ")[1];
             
 
@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
 
    
     } catch(err){
-        res.staus(401).json({
+        res.status(401).json({
             message: "Forbidden 🚫🚫🚫"
         })
     }

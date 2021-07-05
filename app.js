@@ -1,35 +1,44 @@
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mongoose = require('mongoose')
-
-require('dotenv').config()
+const express = require("express");
+require("dotenv").config();
+const mongoose = require("mongoose");
+const path = require("path");
 
 
-const usersRouter = require('./routes/users');
-
-const app = express();
-//connect to Db
-const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`
-
-mongoose.connect(mongoURI,{useNewUrlParser:true,useUnifiedTopology:true});
+/**CONNECT TO DB */
+const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`;
+console.log("mongoURI", mongoURI);
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
-
-db.on('error',console.error.bind(console,'connection error:'))
-db.once('open',function(){
-    console.log('connected to DB thanks')
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function () {
+  console.log("connected to DB thanks");
 });
 
 
 
-app.use(logger('dev'));
+
+/** INIT */
+const app = express();
+
+/** REQUEST PARSERS */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
+//Setup Cross Origin
+app.use(require("cors")());
 
-app.use('/users', usersRouter);
-app.use('/DigitalCampus', usersRouter);
+//Bring in the routes
+app.use("/user", require("./routes/user"));
+app.use("/chatroom", require("./routes/chatroom"));
+
+//Setup Error Handlers
+const errorHandlers = require("./handlers/errorHandlers");
+app.use(errorHandlers.notFound);
+app.use(errorHandlers.mongoseErrors);
+if (process.env.ENV === "DEVELOPMENT") {
+  app.use(errorHandlers.developmentErrors);
+} else {
+  app.use(errorHandlers.productionErrors);
+}
 
 module.exports = app;

@@ -28,14 +28,7 @@ const userSchema = new Schema({
         type : String,
         required:[true ,'Please confirm your password']
     },
-    
-    toObject: {
-        virtuals: true
-    },
-    toJSON: {
-        virtuals: true
-        }
-      
+          
 })
 
-module.exports = mongoose.model('userModel',userSchema)
+module.exports = mongoose.model('User',userSchema)

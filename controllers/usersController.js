@@ -3,13 +3,13 @@ const { validationResult } = require("express-validator");
 const createError = require("http-errors");
 
 
-exports.uploadUserPhoto = upload.single('photo');
+// exports.uploadUserPhoto = upload.single('photo');
 
 
 exports.getUsers = async (req, res, next) => {
     try {
         const users = await User.find()
-        .select("-password -__v")
+        .select("-password")
         .sort("lastName")
         .limit(5);
         res.status(200).send(users);

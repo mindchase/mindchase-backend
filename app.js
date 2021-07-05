@@ -1,8 +1,9 @@
-const express = require("express");
-require("dotenv").config();
-const mongoose = require("mongoose");
-const path = require("path");
-
+const express = require('express');
+require('dotenv').config();
+const mongoose = require('mongoose');
+const cors = require('cors');
+const chatroomRouter = require("./routes/chatroom")
+const userRouter = require("./routes/user")
 
 /**CONNECT TO DB */
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`;
@@ -25,11 +26,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Setup Cross Origin
-app.use(require("cors")());
+app.use(cors());
 
 //Bring in the routes
-app.use("/user", require("./routes/user"));
-app.use("/chatroom", require("./routes/chatroom"));
+app.use("/users", userRouter);
+app.use("/chatrooms", chatroomRouter);
 
 //Setup Error Handlers
 const errorHandlers = require("./handlers/errorHandlers");

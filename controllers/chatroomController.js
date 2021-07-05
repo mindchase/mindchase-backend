@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Chatroom = mongoose.model("Chatroom");
+
+const Chatroom = require("../models/Chatroom");
 
 exports.createChatroom = async (req, res) => {
   const { name } = req.body;
@@ -10,7 +10,7 @@ exports.createChatroom = async (req, res) => {
 
   const chatroomExists = await Chatroom.findOne({ name });
 
-  if (chatroomExists) throw "Chatroom with that name already exists!";
+  if (chatroomExists) throw Error ("Chatroom with that name already exists!");
 
   const chatroom = new Chatroom({
     name,

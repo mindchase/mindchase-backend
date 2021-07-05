@@ -53,3 +53,4 @@ exports.getCourse = async (req, res, next) => {
       next(e);
     }
   };
+  

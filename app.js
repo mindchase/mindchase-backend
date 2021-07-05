@@ -2,8 +2,8 @@ const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
-const chatroomRouter = require("./routes/chatroom")
-const userRouter = require("./routes/user")
+const chatroomRouter = require("./routes/chatrooms")
+const userRouter = require("./routes/users")
 
 /**CONNECT TO DB */
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`;

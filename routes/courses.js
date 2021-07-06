@@ -12,11 +12,11 @@ const {
 router
     .route('/')
     .get(getCourses)
-    .post(auth ,isAdmin,addCourse)
+    .post(auth ,addCourse)
     router
     .route('/:id')
     .get(getCourse)
-    .delete(auth,isAdmin,deleteCourse)
-    .put(auth,isAdmin,updateCourse)
+    .delete(auth,deleteCourse)
+    .put(auth,updateCourse)
 
 module.exports = router

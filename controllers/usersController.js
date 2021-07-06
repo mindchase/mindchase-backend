@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const { validationResult } = require("express-validator");
 const createError = require("http-errors");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.getUsers = async (req, res, next) => {
@@ -112,12 +112,33 @@ exports.login = async (req, res) => {
         token,
     
       });
-    
+   
   } catch (error) {
     throw new Error(error);
   }
-
-  
-
   
 };
+
+
+exports.loginUser = async (req, res, next) => {
+    const email = req.body.email;
+    const password = req.body.password;
+  
+    try {
+      const allUsers = await User.find()
+      const user = await User.findOne({ email });
+      if (!user) throw new createError.NotFound("User not found")
+
+      const valid = await user.checkPassword(password);
+      if (!valid) throw new createError(401, "Password incorrect")
+  
+      const data = user.getPublicFields();
+      const token = user.generateAuthToken()
+      res
+        .status(200)
+        .header("x-auth", token)
+        .send(data);
+    } catch (e) {
+      next(e);
+    }
+  };

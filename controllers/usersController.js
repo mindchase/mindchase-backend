@@ -62,32 +62,37 @@ exports.addUser = async (req, res, next) => {
   }
 };
 exports.register = async (req, res) => {
+  console.log("register")
   const { name, email, password } = req.body;
 
   const emailRegex = /@gmail.com|@yahoo.com|@hotmail.com|@live.com/;
+  try {
+    if (!emailRegex.test(email))
+      throw Error("Email address wrong syntax");
+    if (password.length < 6)
+      throw Error("Password must be atleast 6 characters long.");
 
-  if (!emailRegex.test(email))
-    throw Error("Email is not supported from your domain.");
-  if (password.length < 6)
-    throw Error("Password must be atleast 6 characters long.");
+    const userExists = await User.findOne({
+      email,
+    });
 
-  const userExists = await User.findOne({
-    email,
-  });
+    if (userExists) throw Error("User with same email already exits.");
 
-  if (userExists) throw Error("User with same email already exits.");
+    const user = new User({
+      name,
+      email,
+      password,
+    });
 
-  const user = new User({
-    name,
-    email,
-    password,
-  });
+    await user.save();
 
-  await user.save();
-
-  res.json({
-    message: "User [" + name + "] registered successfully!",
-  });
+    res.json({
+      message: "User [" + name + "] registered successfully!",
+    });
+  } catch (e) {
+    console.log(e)
+  }
+  
 };
 
 exports.login = async (req, res) => {

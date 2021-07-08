@@ -9,7 +9,7 @@ const csurf = require('csurf')
 /**Routing**/
 const indexRouter = require("./routes/index");
 const usersRouter = require('./routes/users');
-const corsesRouter = require('./routes/courses')
+const coursesRouter = require('./routes/courses')
 const chatroomRouter = require("./routes/chatrooms")
 const userRouter = require("./routes/users")
 const { body } = require('express-validator');
@@ -37,6 +37,9 @@ app.use(cors());
 //Bring in the routes
 app.use("/users", userRouter);
 app.use("/chatrooms", chatroomRouter);
+app.use("/courses", coursesRouter);
+
+
 //Setup Error Handlers
 const errorHandlers = require("./handlers/errorHandlers");
 app.use(errorHandlers.notFound);

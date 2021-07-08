@@ -6,9 +6,19 @@ const CourseSchema = new Schema({
     type: String,
     required: true
   },
-  nameCourse: {
+  route: {
     type: String,
     required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  video: {
+    type: String
+  },
+  presentation: {
+    type: String
   },
   img: {
     type: String,

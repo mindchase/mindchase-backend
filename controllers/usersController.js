@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const { validationResult } = require("express-validator");
 const createError = require("http-errors");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.getUsers = async (req, res, next) => {
@@ -62,32 +62,37 @@ exports.addUser = async (req, res, next) => {
   }
 };
 exports.register = async (req, res) => {
+  console.log("register")
   const { name, email, password } = req.body;
 
   const emailRegex = /@gmail.com|@yahoo.com|@hotmail.com|@live.com/;
+  try {
+    if (!emailRegex.test(email))
+      throw Error("Email address wrong syntax");
+    if (password.length < 6)
+      throw Error("Password must be atleast 6 characters long.");
 
-  if (!emailRegex.test(email))
-    throw Error("Email is not supported from your domain.");
-  if (password.length < 6)
-    throw Error("Password must be atleast 6 characters long.");
+    const userExists = await User.findOne({
+      email,
+    });
 
-  const userExists = await User.findOne({
-    email,
-  });
+    if (userExists) throw Error("User with same email already exits.");
 
-  if (userExists) throw Error("User with same email already exits.");
+    const user = new User({
+      name,
+      email,
+      password,
+    });
 
-  const user = new User({
-    name,
-    email,
-    password,
-  });
+    await user.save();
 
-  await user.save();
-
-  res.json({
-    message: "User [" + name + "] registered successfully!",
-  });
+    res.json({
+      message: "User [" + name + "] registered successfully!",
+    });
+  } catch (e) {
+    console.log(e)
+  }
+  
 };
 
 exports.login = async (req, res) => {
@@ -112,12 +117,33 @@ exports.login = async (req, res) => {
         token,
     
       });
-    
+   
   } catch (error) {
     throw new Error(error);
   }
-
-  
-
   
 };
+
+
+exports.loginUser = async (req, res, next) => {
+    const email = req.body.email;
+    const password = req.body.password;
+  
+    try {
+      const allUsers = await User.find()
+      const user = await User.findOne({ email });
+      if (!user) throw new createError.NotFound("User not found")
+
+      const valid = await user.checkPassword(password);
+      if (!valid) throw new createError(401, "Password incorrect")
+  
+      const data = user.getPublicFields();
+      const token = user.generateAuthToken()
+      res
+        .status(200)
+        .header("x-auth", token)
+        .send(data);
+    } catch (e) {
+      next(e);
+    }
+  };

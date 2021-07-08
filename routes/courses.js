@@ -1,5 +1,6 @@
 const express= require('express')
 const router = express.Router();
+const auth = require('../middleware/auth')
 const {
     getCourses,
     getCourse,
@@ -11,11 +12,11 @@ const {
 router
     .route('/')
     .get(getCourses)
-    .post(addCourse)
+    .post(/*auth ,*/addCourse)
     router
     .route('/:id')
     .get(getCourse)
-    .delete(deleteCourse)
-    .put(updateCourse)
+    .delete(auth,deleteCourse)
+    .put(auth,updateCourse)
 
 module.exports = router

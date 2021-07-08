@@ -1,9 +1,21 @@
 const express = require('express');
-require('dotenv').config();
-const mongoose = require('mongoose');
-const cors = require('cors');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mongoose = require('mongoose')
+const csurf = require('csurf')
+ require('crypto').randomBytes(64).toString('hex')
+
+/**Routing**/
+const indexRouter = require("./routes/index");
+const usersRouter = require('./routes/users');
+const coursesRouter = require('./routes/courses')
 const chatroomRouter = require("./routes/chatrooms")
 const userRouter = require("./routes/users")
+const { body } = require('express-validator');
+const cors = require('cors');
+
+require('dotenv').config({path:"./.env.development.local"})
 
 /**CONNECT TO DB */
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`;
@@ -15,22 +27,18 @@ db.once("open", function () {
   console.log("connected to DB thanks");
 });
 
-
-
-
 /** INIT */
 const app = express();
-
 /** REQUEST PARSERS */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 //Setup Cross Origin
 app.use(cors());
-
 //Bring in the routes
 app.use("/users", userRouter);
 app.use("/chatrooms", chatroomRouter);
+app.use("/courses", coursesRouter);
+
 
 //Setup Error Handlers
 const errorHandlers = require("./handlers/errorHandlers");

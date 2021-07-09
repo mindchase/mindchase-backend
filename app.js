@@ -15,7 +15,7 @@ const userRouter = require("./routes/users")
 const { body } = require('express-validator');
 const cors = require('cors');
 
-require('dotenv').config({path:"./.env.development.local"})
+require('dotenv').config()
 
 /**CONNECT TO DB */
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`;

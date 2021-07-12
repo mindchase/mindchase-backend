@@ -6,11 +6,11 @@ const auth = require('../middleware/auth')
 router
     .route('/')
     .get(getquizes)
-    .post(/*auth ,*/addquiz) // i didn't need the quizControllaer becouse, that if he don't answer , he can to go the next qution
+    .post(addquiz) // i didn't need the quizControllaer becouse, that if he don't answer , he can to go the next qution
 
 router
     .router('/')
-    .get(getQuizes)
+    .get(getQuiz)
     .post(addquiz)
     .delete(auth,deleteQuiz)
     .put(auth, updateQuiz)

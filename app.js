@@ -12,6 +12,7 @@ const usersRouter = require('./routes/users');
 const coursesRouter = require('./routes/courses')
 const chatroomRouter = require("./routes/chatrooms")
 const userRouter = require("./routes/users")
+const quizRouter = require("./routes/quizRouter")
 const { body } = require('express-validator');
 const cors = require('cors');
 
@@ -38,6 +39,7 @@ app.use(cors());
 app.use("/users", userRouter);
 app.use("/chatrooms", chatroomRouter);
 app.use("/courses", coursesRouter);
+app.use("/quiz", quizRouter)
 
 
 //Setup Error Handlers

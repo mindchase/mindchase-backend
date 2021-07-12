@@ -97,9 +97,8 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({
-    email, 
-  });
+  const user = await User.findOne({email});
+
   if (!user) throw Error("Email and Password did not match.");
   try {
     const match = bcrypt.compareSync(password, user.password);
@@ -109,9 +108,8 @@ exports.login = async (req, res) => {
         message: "Incorrect password",
       });
     }
-    
     const token = await jwt.sign({ id: user.id }, process.env.SECRET);
-    console.log(token)
+
     return res.json({
         message: "User logged in successfully!",
         token,
@@ -124,7 +122,7 @@ exports.login = async (req, res) => {
   
 };
 
-
+/** 
 exports.loginUser = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -147,3 +145,4 @@ exports.loginUser = async (req, res, next) => {
       next(e);
     }
   };
+  */

@@ -7,28 +7,22 @@ const quizSchema = new Schema({
         required: true
     },
     checkbox1: {
-        type: String,
-        required: true
+        type: Boolean,
     },
     answer1: {
         type: String,
-        required: true
     },
     checkbox2: {
-        type: String,
-        required: true
+        type: Boolean,
     },
     answer2: {
         type: String,
-        required: true
     },
     checkbox3: {
-        type: String,
-        required: true
+        type: Boolean,
     },
     answer3: {
         type: String,
-        required: true
     }
 })
 

@@ -1,17 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const auth = require('../middleware/auth')
+const {
+    getQuiz,
+    getQuizes,
+    addQuiz,
+    deleteQuiz,
+    updateQuiz
+} = require('../controllers/quizController')
+
 
 
 router
     .route('/')
-    .get(getquizes)
-    .post(addquiz) // i didn't need the quizControllaer becouse, that if he don't answer , he can to go the next qution
+    .get(getQuizes)
+    .post(addQuiz) // i didn't need the quizControllaer becouse, that if he don't answer , he can to go the next qution
 
 router
-    .router('/')
+    .route("/:id")
     .get(getQuiz)
-    .post(addquiz)
     .delete(auth,deleteQuiz)
     .put(auth, updateQuiz)
 

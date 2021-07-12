@@ -3,8 +3,8 @@ const createError = require("http-errors");
 
 exports.getQuizes = async (req, res, next) => {
     try {
-        const Quizes = await Quiz.find();
-        res.status(200).send(Quizes);
+        const quizes = await Quiz.find();
+        res.status(200).send(quizes);
     } catch (e) {
         next(e);
     }
@@ -12,9 +12,9 @@ exports.getQuizes = async (req, res, next) => {
 
 exports.getQuiz = async (req, res, next) => {
     try {
-      const Quiz = await Quiz.findById(req.params.id).populate('Quiz');
-      if (!Quiz) throw new createError.NotFound();
-      res.status(200).send(Quiz);
+      const quiz = await Quiz.findById(req.params.id).populate('quiz');
+      if (!quiz) throw new createError.NotFound();
+      res.status(200).send(quiz);
     } catch (e) {
       next(e);
     }
@@ -22,9 +22,9 @@ exports.getQuiz = async (req, res, next) => {
   
   exports.deleteQuiz = async (req, res, next) => {
     try {
-      const Quiz = await Quiz.findByIdAndDelete(req.params.id);
-      if (!Quiz) throw new createError.NotFound();
-      res.status(200).send(Quiz);
+      const quiz = await Quiz.findByIdAndDelete(req.params.id);
+      if (!quiz) throw new createError.NotFound();
+      res.status(200).send(quiz);
     } catch (e) {
       next(e);
     }
@@ -32,11 +32,11 @@ exports.getQuiz = async (req, res, next) => {
   
   exports.updateQuiz = async (req, res, next) => {
     try {
-      const Quiz = await Quiz.findByIdAndUpdate(req.params.id, req.body, {
+      const quiz = await Quiz.findByIdAndUpdate(req.params.id, req.body, {
         new: true
       });
-      if (!Quiz) throw new createError.NotFound();
-      res.status(200).send(Quiz);
+      if (!quiz) throw new createError.NotFound();
+      res.status(200).send(quiz);
     } catch (e) {
       next(e);
     }
@@ -44,9 +44,9 @@ exports.getQuiz = async (req, res, next) => {
   
   exports.addQuiz = async (req, res, next) => {
     try {
-      const Quiz = new Quiz(req.body);
-      await Quiz.save();
-      res.status(200).send(Quiz);
+      const quiz = new Quiz(req.body);
+      await quiz.save();
+      res.status(200).send(quiz);
     } catch (e) {
       next(e);
     }

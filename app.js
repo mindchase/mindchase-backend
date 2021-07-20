@@ -12,7 +12,7 @@ const usersRouter = require('./routes/users');
 const coursesRouter = require('./routes/courses')
 const chatroomRouter = require("./routes/chatrooms")
 const userRouter = require("./routes/users")
-const quizRouter = require("./routes/quizRouter")
+const quizRouter = require("./routes/quiz")
 const { body } = require('express-validator');
 const cors = require('cors');
 

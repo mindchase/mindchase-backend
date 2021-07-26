@@ -7,7 +7,7 @@ const Quiz = require("../models/Quiz")
 // get all quiz quizs ------------------------------------------------
 exports.getQuizes = async (req, res) => {
   try {
-    const quizes = await quiz.find({}).exec()
+    const quizes = await Quiz.find({}).exec()
     return res.status(200).json(quizes)
   } catch (error) {
     return res.status(500).json({ "error": error })
@@ -37,7 +37,7 @@ exports.getQuiz = async (req, res) => {
 
 exports.addQuiz = async (req, res) => {
   try {
-
+    console.log(req.body)
     const quiz = await Quiz.create(req.body)
     return res.status(201).json(quiz)
 
@@ -46,7 +46,6 @@ exports.addQuiz = async (req, res) => {
     return res.status(500).json({ "error": error })
   }
 }
-
 
 
 

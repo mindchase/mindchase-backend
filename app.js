@@ -33,6 +33,9 @@ const app = express();
 /** REQUEST PARSERS */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.get("/", (req, res) => {
+  res.json({});
+})
 //Setup Cross Origin
 app.use(
   cors({

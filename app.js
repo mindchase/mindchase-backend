@@ -21,11 +21,15 @@ require('dotenv').config()
 /**CONNECT TO DB */
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`;
 console.log("mongoURI", mongoURI);
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+//useCreateIndex:true}   mongoose.set('useFindAndModify', false);
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true ,useCreateIndex:true});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
   console.log("connected to DB thanks");
+  mongoose.set('useFindAndModify', false);
+
+
 });
 
 /** INIT */
@@ -46,7 +50,7 @@ app.use("/quiz", quizRouter)
 const errorHandlers = require("./handlers/errorHandlers");
 app.use(errorHandlers.notFound);
 app.use(errorHandlers.mongoseErrors);
-if (process.env.ENV === "DEVELOPMENT") {
+if (process.env.PORT === "DEVELOPMENT") {
   app.use(errorHandlers.developmentErrors);
 } else {
   app.use(errorHandlers.productionErrors);

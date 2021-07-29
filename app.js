@@ -38,10 +38,11 @@ app.get("/", (req, res) => {
 })
 //Setup Cross Origin
 app.use(
-  cors({
-    origin: [process.env.NODE_ENV === 'production' ? process.env.DOMAIN : "http://localhost:3000"],
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  })
+  cors()
+  // {
+  //   origin: [process.env.NODE_ENV === 'production' ? process.env.DOMAIN : "http://localhost:3000"],
+  //   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  // }
 );
 //Bring in the routes
 app.use("/users", userRouter);
